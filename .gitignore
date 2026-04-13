@@ -1,0 +1,28 @@
+# Local environment and secrets
+.env
+*.env.local
+*.env.*.local
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local databases and artifacts
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated briefing artifacts
+ai_daily_push/briefing_feishu_today.txt
+ai_daily_push/briefing_file_smoke_test.txt
+ai_daily_push/briefing_feishu_*.txt
+ai_daily_push/candidates_today.jsonl
+ai_daily_push/candidates_today.ndjson
+
+# Scheduler runtime logs
+codex_scheduler/logs/
+
+# IDE
+.idea/
+

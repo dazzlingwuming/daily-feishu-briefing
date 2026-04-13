@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Daily Feishu Briefing"
+  short_description: "Daily AI briefing workflow for Feishu pushes."
+  default_prompt: "Use $ai-daily-feishu-briefing to build or update a daily AI papers and news briefing workflow with Feishu private-message delivery."

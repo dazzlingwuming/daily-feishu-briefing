@@ -1,0 +1,36 @@
+Use $ai-daily-feishu-briefing.
+
+Gather today's most important AI papers and AI news from high-signal sources. Prioritize official sources and recent items. Select only the strongest items; fewer high-quality picks are better than padding.
+
+Write the final briefing in Chinese.
+
+Use this exact output structure for each item:
+
+1. 标题
+一句话摘要：如果是论文，写清它解决了什么问题、方法上有什么新东西。如果是资讯，写清发生了什么事。
+关键点：如果是论文，写亮点1；亮点2。如果是资讯，写发布了什么；影响了谁。
+为什么值得关注：如果是论文，写这对谁有价值、适合什么方向的人看。如果是资讯，写这对产品、研发或业务判断意味着什么。
+链接：https://...
+
+Overall constraints:
+- Aim for 3 papers and 3 news items when quality allows.
+- Do not use generic filler like “这是近期值得跟踪的 AI 内容”.
+- Make the “为什么值得关注” line specific and differentiated for each item.
+
+Important execution rule:
+- Do not send the Feishu message yourself.
+- Do not place the final Chinese briefing inline inside any `powershell.exe -Command "..."` string.
+- Instead, write the final finished briefing to the UTF-8 file path provided by the wrapper script.
+- After writing the file, briefly confirm that the report file was created successfully.
+- Prefer reusing the existing `ai_daily_push` project as a data-source helper instead of inventing new one-off scripts.
+- Do not rely on uninstalled third-party Python packages such as `feedparser`.
+- If you need Python, use only the standard library or the already-present project code in `ai_daily_push`.
+- When using project code, do not run it from the repo root with `import app...`.
+- Prefer the existing helper scripts under `ai_daily_push\scripts`.
+- For candidate extraction, prefer:
+  `python ai_daily_push\scripts\export_candidates.py`
+- The current working directory is the repo root `D:\APP_self\热点论文和学术skill`, not `ai_daily_push`.
+- Therefore do not run `.\\scripts\\...` commands from the repo root.
+- Always use repo-root-relative paths such as:
+  `python ai_daily_push\scripts\export_candidates.py`
+  `python ai_daily_push\scripts\send_test_message.py --file ai_daily_push\briefing_feishu_today.txt`
