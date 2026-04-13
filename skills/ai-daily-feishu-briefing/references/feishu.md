@@ -14,10 +14,10 @@ lark-cli im +messages-send --as bot --user-id "ou_xxx" --text "..."
 
 Recommended use:
 
-- Local smoke tests
-- Fast recipient verification
-- Personal always-on machine setups
-- Sending the full content of a local UTF-8 text file after reading the recipient from `.env`
+- local smoke tests
+- fast recipient verification
+- personal machine setups
+- sending the full content of a local UTF-8 text file after reading the recipient from `.env`
 
 ### API Mode
 
@@ -31,9 +31,9 @@ Required environment:
 
 Required steps:
 
-1. Fetch tenant access token
-2. Send text message to recipient open ID
-3. Record response and message ID
+1. fetch tenant access token
+2. send a message to the recipient open ID
+3. record the response and message ID
 
 ## Identity Notes
 
@@ -54,6 +54,11 @@ Example:
 missing required scope(s): im:message.send_as_user, im:message
 ```
 
+Meaning:
+
+- you are trying to send as `user`
+- required OAuth scopes are not granted
+
 ### Network blocked by sandbox
 
 Example:
@@ -61,6 +66,10 @@ Example:
 ```text
 connectex: An attempt was made to access a socket in a way forbidden by its access permissions
 ```
+
+Meaning:
+
+- the current execution environment blocked outbound network access
 
 ## Verified Local Pattern
 

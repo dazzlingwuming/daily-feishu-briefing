@@ -2,35 +2,37 @@
 
 # ai_daily_push
 
-Standalone Python workflow for:
+`ai_daily_push` is the standalone Python implementation of the daily briefing workflow.
+
+It is responsible for:
 
 - fetching AI paper and AI news candidates
-- deduplicating and ranking them
-- rendering a Chinese daily briefing
-- sending the final result to Feishu private chat
+- deduplicating and ranking items
+- rendering a Chinese briefing
+- sending the result to Feishu private chat
 
-## Project Structure
+## Directory Layout
 
 - `app/sources/`
-  Source adapters for arXiv and official blogs
+  Source adapters such as arXiv and official blog feeds
 - `app/pipeline/`
-  normalization, scoring, dedup, selection, summarization
+  Normalize, deduplicate, score, select, and summarize
 - `app/push/`
-  rendering and Feishu senders
+  Render the report and deliver it through Feishu
 - `app/storage/`
-  SQLite persistence and push history
+  SQLite cache and push history
 - `scripts/`
-  entrypoints and Windows task helpers
+  Operational entrypoints and Windows task helpers
 - `tests/`
-  basic regression tests
+  Basic regression tests
 
 ## Quick Start
 
 1. Copy `.env.example` to `.env`
-2. Fill at least:
+2. Set at least:
    - `FEISHU_SEND_MODE=cli`
    - `FEISHU_RECEIVER_OPEN_ID=your_open_id`
-3. Initialize the local database:
+3. Initialize the database:
 
 ```powershell
 python scripts\init_db.py
@@ -42,7 +44,7 @@ python scripts\init_db.py
 python scripts\send_test_message.py --message "smoke test"
 ```
 
-5. Run one daily pass:
+5. Run one pass:
 
 ```powershell
 python scripts\run_once.py
@@ -54,22 +56,22 @@ python scripts\run_once.py
 python scripts\run_once.py --ignore-history
 ```
 
-## Useful Helper Scripts
+## Useful Scripts
 
 - `scripts/export_candidates.py`
-  Export normalized candidate items as JSON lines for manual inspection
+  Export normalized candidates as JSON lines for inspection
 - `scripts/send_test_message.py --file <path>`
-  Send a UTF-8 text file directly through the configured Feishu sender
+  Send a UTF-8 text file through the configured Feishu sender
 
-## Windows Scheduling
+## Scheduling
 
-This project also includes a pure project-based scheduler:
+This project also includes a pure project-based Windows scheduled task flow:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_task.ps1 -Time "09:00"
 ```
 
-Remove it later with:
+Remove it later:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\uninstall_windows_task.ps1
@@ -78,11 +80,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\uninstall_windows_task.ps1
 ## Delivery Modes
 
 - `FEISHU_SEND_MODE=cli`
-  Uses local `lark-cli`
+  Use local `lark-cli`
 - `FEISHU_SEND_MODE=api`
-  Uses Feishu Open Platform app credentials
+  Use Feishu Open Platform app credentials
 
 ## Notes
 
 - If `OPENAI_API_KEY` is empty, summarization falls back to local heuristic summaries.
-- Generated briefings, local databases, and logs should not be committed.
+- Generated briefings, databases, and runtime logs should stay out of version control.

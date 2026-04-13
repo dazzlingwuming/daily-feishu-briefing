@@ -2,23 +2,25 @@
 
 # Codex 调度层
 
-这个目录负责 Codex 驱动的日报流程：
+这个目录保存的是 Codex 驱动的包装层。
+
+它主要做四件事：
 
 1. 调用 `codex exec`
 2. 使用本地安装的 `ai-daily-feishu-briefing` skill
-3. 把最终中文日报生成到一个 UTF-8 文件
-4. 再通过 `ai_daily_push` 里的稳定飞书发送器发送该文件
+3. 把最终中文日报写入 UTF-8 文本文件
+4. 再通过 `ai_daily_push` 里的稳定飞书发送器把这个文件发出去
 
-这套设计是有意为之的。这样可以避免把很长的中文正文直接内联进 shell 命令，在 Windows 上会更稳定。
+这样设计的目的，是避免把很长的中文正文直接内联进 shell 命令。在 Windows 上，这种方式明显更稳定。
 
 ## 文件说明
 
 - `briefing_prompt.txt`
-  给包装脚本使用的非交互 Codex prompt
+  传给 Codex 的非交互 prompt
 - `run_codex_briefing.ps1`
   主包装脚本
 - `install_codex_briefing_task.ps1`
-  注册每天自动执行的 Windows 计划任务
+  安装每日 Windows 计划任务
 - `uninstall_codex_briefing_task.ps1`
   删除该计划任务
 
@@ -40,17 +42,17 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\install_codex_briefin
 powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_briefing_task.ps1
 ```
 
-## 成功时你会看到什么
+## 成功时会看到什么
 
-当包装脚本成功时，通常会出现：
+成功时通常会出现：
 
 - 新的 `ai_daily_push/briefing_feishu_today.txt`
-- `codex_scheduler/logs/` 下出现新日志
-- 控制台打印一个飞书消息 ID
-- 最后一行提示：
+- `codex_scheduler/logs/` 下的新日志
+- 控制台打印的飞书消息 ID
+- 最后一行成功提示：
   `Report generated and Feishu delivery completed.`
 
-## 信任边界说明
+## 使用前提
 
 这套流程使用：
 
@@ -58,4 +60,4 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_brief
 codex exec --search --dangerously-bypass-approvals-and-sandbox
 ```
 
-只建议在你自己控制的机器和工作区里使用。
+只建议运行在你自己可控、可信的机器和工作区里。

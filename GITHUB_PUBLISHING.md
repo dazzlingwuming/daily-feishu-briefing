@@ -2,9 +2,9 @@
 
 # GitHub Publishing Guide
 
-This file describes what should be uploaded and what should remain local.
+This file is for maintainers of this repository.
 
-## Upload These
+## Safe To Commit
 
 - `skills/ai-daily-feishu-briefing/`
 - `ai_daily_push/app/`
@@ -32,22 +32,9 @@ This file describes what should be uploaded and what should remain local.
 - all scheduler logs
 - local IDE files
 
-## Suggested Repo README Notes
+## Before A Public Push
 
-If you publish this publicly, explain:
-
-1. The project supports two modes: standalone Python mode and Codex-driven scheduled mode.
-2. Feishu delivery requires local `lark-cli` or API credentials.
-3. The Codex scheduler is intended for a trusted personal machine.
-4. The included examples use placeholder values only.
-
-## Suggested First Commit Contents
-
-- source code
-- scripts
-- tests
-- docs
-- `.env.example`
-- `.gitignore`
-
-Do not include any generated runtime output in the first public commit.
+1. Confirm `.env` is not tracked.
+2. Confirm no real credentials or receiver IDs appear in examples.
+3. Confirm generated files and logs are ignored.
+4. Confirm runtime artifacts are not staged.

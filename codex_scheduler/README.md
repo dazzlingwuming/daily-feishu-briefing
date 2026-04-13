@@ -2,23 +2,25 @@
 
 # Codex Scheduler
 
-This folder is the Codex-driven workflow:
+This folder contains the Codex-driven wrapper around the briefing workflow.
 
-1. call `codex exec`
-2. use the local `ai-daily-feishu-briefing` skill
-3. generate the final Chinese briefing into a UTF-8 file
-4. send that file through the stable Feishu sender in `ai_daily_push`
+It does four things:
 
-This design is intentional. It avoids sending large Chinese payloads inline through shell command strings, which is less stable on Windows.
+1. calls `codex exec`
+2. uses the local `ai-daily-feishu-briefing` skill
+3. writes the final Chinese briefing into a UTF-8 text file
+4. sends that file through the stable Feishu sender in `ai_daily_push`
+
+This design avoids passing large Chinese payloads inline through shell command strings, which is less stable on Windows.
 
 ## Files
 
 - `briefing_prompt.txt`
-  Non-interactive Codex prompt used by the wrapper
+  The non-interactive prompt passed to Codex
 - `run_codex_briefing.ps1`
   Main wrapper script
 - `install_codex_briefing_task.ps1`
-  Register the daily Windows scheduled task
+  Register a daily Windows scheduled task
 - `uninstall_codex_briefing_task.ps1`
   Remove the scheduled task
 
@@ -45,9 +47,9 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_brief
 When the wrapper succeeds, you should see:
 
 - a new `ai_daily_push/briefing_feishu_today.txt`
-- a new file in `codex_scheduler/logs/`
-- a Feishu message ID printed to the console
-- a final line:
+- a new file under `codex_scheduler/logs/`
+- a Feishu message ID in the console
+- a final success line:
   `Report generated and Feishu delivery completed.`
 
 ## Trust Model

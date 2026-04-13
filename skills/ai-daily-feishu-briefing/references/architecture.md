@@ -4,12 +4,12 @@
 
 Build or maintain a daily pipeline that:
 
-1. Collects AI papers and official AI news
-2. Normalizes and deduplicates items
-3. Selects the most relevant items
-4. Generates structured Chinese summaries
-5. Pushes a daily briefing to Feishu private chat
-6. Stores history to avoid duplicate delivery
+1. collects AI papers and official AI news
+2. normalizes and deduplicates items
+3. selects the most relevant items
+4. generates structured Chinese summaries
+5. pushes a daily briefing to Feishu private chat
+6. stores history to avoid duplicate delivery
 
 ## Default Layers
 
@@ -93,22 +93,3 @@ Minimum tables:
 - `push_history`
 
 `push_history` should include `message_id` when available for easier debugging.
-
-## Report Shape
-
-Use plain text in V1.
-
-```text
-AI 每日速递
-【今日论文】
-1. 标题
-摘要：...
-为什么值得关注：...
-链接：...
-
-【今日资讯】
-1. 标题
-摘要：...
-为什么值得关注：...
-链接：...
-```

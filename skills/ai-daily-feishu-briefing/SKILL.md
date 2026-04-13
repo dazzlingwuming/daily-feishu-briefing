@@ -5,35 +5,35 @@ description: Create, extend, debug, or operate a daily AI papers and AI news bri
 
 # AI Daily Feishu Briefing
 
-Use this skill when Codex itself should gather AI papers and AI news, summarize them into a readable Chinese daily briefing, and send the result to Feishu private chat.
+Use this skill when Codex itself should gather AI papers and AI news, summarize them into a readable Chinese daily briefing, and deliver the result to Feishu private chat.
 
 This skill has two modes, in this order of priority:
 
 1. `Codex-driven briefing mode`
 2. `Project-building mode`
 
-Default to mode 1 unless the user explicitly asks for a standalone project, scheduler, service, or codebase changes.
+Default to mode 1 unless the user explicitly asks for a standalone project, service, scheduler, or codebase changes.
 
 ## Workflow
 
-When the user asks for a daily briefing, follow this order unless the user asks for a narrower task:
+When the user asks for a daily briefing, follow this order unless the request is narrower:
 
-1. Determine whether this is:
-   a. a direct daily briefing request for immediate delivery
-   b. a request to build or modify the underlying project
-2. For direct daily briefing requests, do not default into project scaffolding.
+1. Decide whether this is:
+   a. a direct briefing request
+   b. a project-building request
+2. For direct briefing requests, do not default into project scaffolding.
 3. Verify or infer the active send mode:
    - `cli` for local environments with working `lark-cli`
    - `api` for server or CI environments using `app_id` and `app_secret`
-4. Gather candidate items from the default sources or the user-specified sources.
-5. Remove obvious duplicates and keep only the highest-signal items.
-6. Write the final briefing in Chinese in the required concise format.
-7. Send the finished briefing to Feishu.
-8. Only move into project-building mode if the user asks for persistent automation, code changes, or scheduling.
+4. Gather candidate items from the default sources or the sources explicitly requested by the user.
+5. Remove duplicates and keep only the highest-signal items.
+6. Write the final briefing in Chinese in the expected concise format.
+7. Send the result to Feishu.
+8. Only move into project-building mode if the user explicitly asks for persistent automation or code changes.
 
 ## Codex-Driven Briefing Mode
 
-Use this mode when the user wants something like:
+Use this mode for prompts like:
 
 - 每天帮我推送 AI 论文和资讯到飞书
 - 现在帮我整理今天的 AI 日报并发给我
@@ -41,9 +41,8 @@ Use this mode when the user wants something like:
 
 In this mode:
 
-- Codex should directly gather sources using available tools or existing scripts
-- Codex should directly summarize and format the content
-- Codex should send the result through Feishu
+- Codex should gather sources directly using available tools or existing scripts
+- Codex should summarize and format the content directly
 - Codex should optimize for readability, not raw completeness
 
 Use this output structure by default:
@@ -67,7 +66,7 @@ AI 每日速递
 链接：https://...
 ```
 
-Prefer fewer items with better summaries over more items with generic text.
+Prefer fewer items with stronger summaries over more items with generic text.
 
 Read [references/codex-workflow.md](references/codex-workflow.md) for the direct briefing workflow and summary rules.
 
@@ -138,7 +137,7 @@ Requirements:
 - Avoid literal translation when summarizing English sources
 - Preserve enough detail to explain why the item matters
 
-If summarization fails for an item, degrade to title plus trimmed source summary instead of failing the whole report.
+If summarization fails for an item, degrade to the title plus a trimmed source summary instead of failing the whole report.
 
 ## Validation
 

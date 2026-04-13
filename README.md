@@ -1,108 +1,49 @@
 [中文](./README.zh-CN.md) | English
 
-# AI Daily Feishu Briefing
+# Daily Feishu Briefing
 
-This repository contains two related workflows for delivering a daily AI papers and AI news briefing to Feishu private chat.
+This repository provides a reusable workflow for generating a daily briefing and sending it to Feishu private chat.
 
-## What Is Included
+It supports two usage modes:
+
+- `Codex + skill mode`
+  Codex uses the `ai-daily-feishu-briefing` skill to gather sources, select the strongest items, write the final Chinese briefing, and send it through the stable Feishu sender.
+- `Standalone Python mode`
+  The `ai_daily_push` project fetches, ranks, renders, and sends the briefing without depending on Codex at runtime.
+
+## Repository Structure
 
 - `skills/ai-daily-feishu-briefing/`
-  The repository copy of the Codex skill source, including `SKILL.md`, references, helper scripts, and usage docs.
+  Repository copy of the Codex skill source
 - `ai_daily_push/`
-  A standalone Python project that fetches candidate items, ranks them, renders a Chinese briefing, and can send it through Feishu.
+  Standalone Python project for fetching, ranking, rendering, and sending
 - `codex_scheduler/`
-  A Codex-driven scheduler that uses the local `ai-daily-feishu-briefing` skill plus `codex exec` to generate the daily briefing into a UTF-8 file, then sends that file through the project sender.
-- `项目.md`
-  Earlier design notes in Chinese.
+  Wrapper scripts for running the skill through `codex exec` and Windows Task Scheduler
 
-## Skill vs Project
+## Quick Start
 
-This repo has both a skill-driven path and a normal project path.
+### Option 1: Use The Codex Skill
 
-### 1. Skill-driven path
-
-Use this when you want Codex to do the final selection and writing.
-
-Flow:
-
-1. Windows Task Scheduler or manual PowerShell run
-2. `codex_scheduler/run_codex_briefing.ps1`
-3. `codex exec`
-4. local skill: `ai-daily-feishu-briefing`
-5. generate `ai_daily_push/briefing_feishu_today.txt`
-6. send the file through the stable Feishu sender
-
-This path is best when you want Codex to decide the final content.
-
-### 2. Standalone project path
-
-Use this when you want a direct Python workflow without depending on Codex at runtime.
-
-Flow:
-
-1. `ai_daily_push/scripts/run_once.py`
-2. fetch candidates
-3. deduplicate and rank
-4. render briefing
-5. send to Feishu
-
-This path is best when you want a normal project that is easy to adapt.
-
-## How To Use The Skill
-
-The repository now includes the skill source here:
-
-- `skills/ai-daily-feishu-briefing/`
-
-To actually use it in Codex, install it into your local Codex skills directory so Codex can discover it. The scheduler assumes that the following skill is already available locally:
-
-- `ai-daily-feishu-briefing`
-
-Manual install example:
+1. Install the skill into your local Codex skills directory:
 
 ```powershell
 Copy-Item -Recurse -Force .\skills\ai-daily-feishu-briefing C:\Users\<YourUser>\.codex\skills\ai-daily-feishu-briefing
 ```
 
-Then start a new Codex session and trigger it with a prompt such as:
+2. Start a new Codex session.
+
+3. Trigger it with a prompt such as:
 
 ```text
-Use $ai-daily-feishu-briefing to gather today's most important AI papers and AI news, write a Chinese briefing, and send it to my Feishu private chat.
+Use $ai-daily-feishu-briefing to gather today's most important AI papers and AI news, summarize them in Chinese, and send the final briefing to my Feishu private chat.
 ```
 
-See the skill usage guide:
+See the full skill guide:
 
 - [skills/ai-daily-feishu-briefing/README.md](./skills/ai-daily-feishu-briefing/README.md)
 - [skills/ai-daily-feishu-briefing/README.zh-CN.md](./skills/ai-daily-feishu-briefing/README.zh-CN.md)
 
-That skill guide also explains how to fork this AI-focused skill into other themes such as business, finance, or policy briefings.
-
-Typical manual run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\codex_scheduler\run_codex_briefing.ps1
-```
-
-Typical scheduled run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\codex_scheduler\install_codex_briefing_task.ps1 -Time "08:30"
-```
-
-Stop the scheduled task later:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_briefing_task.ps1
-```
-
-## How To Use The Project
-
-See:
-
-- [ai_daily_push/README.md](./ai_daily_push/README.md)
-- [ai_daily_push/README.zh-CN.md](./ai_daily_push/README.zh-CN.md)
-
-Quick example:
+### Option 2: Use The Python Project
 
 ```powershell
 cd ai_daily_push
@@ -111,34 +52,43 @@ python scripts\send_test_message.py --message "smoke test"
 python scripts\run_once.py --ignore-history
 ```
 
-## Recommended Public Upload Scope
+See:
 
-Safe and useful to upload:
+- [ai_daily_push/README.md](./ai_daily_push/README.md)
+- [ai_daily_push/README.zh-CN.md](./ai_daily_push/README.zh-CN.md)
 
-- `skills/ai-daily-feishu-briefing/`
-- `ai_daily_push/`
-- `codex_scheduler/`
-- `README.md`
-- `README.zh-CN.md`
-- `GITHUB_PUBLISHING.md`
-- `GITHUB_PUBLISHING.zh-CN.md`
-- `项目.md` if you want to keep the original design document
+## Codex Scheduler
 
-Do not upload:
+If you want a Codex-driven scheduled run, use:
 
-- any real `.env`
-- any real Feishu credential or receiver ID
-- generated `*.db`
-- generated briefing text files
-- scheduler logs
-- IDE folders and Python cache files
+```powershell
+powershell -ExecutionPolicy Bypass -File .\codex_scheduler\run_codex_briefing.ps1
+```
 
-The included `.gitignore` already excludes the local and generated artifacts above.
+Install a daily Windows task:
 
-## Before Publishing
+```powershell
+powershell -ExecutionPolicy Bypass -File .\codex_scheduler\install_codex_briefing_task.ps1 -Time "08:30"
+```
 
-1. Confirm `.env` is not committed.
-2. Confirm no real `open_id`, app secret, or access token appears in docs or examples.
-3. Confirm `codex_scheduler/logs/` is excluded.
-4. Confirm generated files like `briefing_feishu_today.txt` are excluded.
-5. Optionally replace machine-specific paths in docs if you want the repo to look cleaner for others.
+Remove it later:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_briefing_task.ps1
+```
+
+See:
+
+- [codex_scheduler/README.md](./codex_scheduler/README.md)
+- [codex_scheduler/README.zh-CN.md](./codex_scheduler/README.zh-CN.md)
+
+## Notes
+
+- Feishu delivery requires either local `lark-cli` or Feishu API credentials.
+- The Codex scheduler is intended for a trusted personal machine.
+- The skill documentation also explains how to fork this AI-focused workflow into other domains such as business, finance, or policy.
+
+For repository maintenance and publishing notes, see:
+
+- [GITHUB_PUBLISHING.md](./GITHUB_PUBLISHING.md)
+- [GITHUB_PUBLISHING.zh-CN.md](./GITHUB_PUBLISHING.zh-CN.md)
