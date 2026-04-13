@@ -19,10 +19,10 @@ ai_daily_push/briefing_file_smoke_test.txt
 ai_daily_push/briefing_feishu_*.txt
 ai_daily_push/candidates_today.jsonl
 ai_daily_push/candidates_today.ndjson
+ai_daily_push/.arxiv_last_request
 
 # Scheduler runtime logs
 codex_scheduler/logs/
 
 # IDE
 .idea/
-
