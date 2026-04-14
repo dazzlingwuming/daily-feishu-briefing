@@ -10,7 +10,7 @@
   由 Codex 使用 `ai-daily-feishu-briefing` skill 抓取信息源、筛选重点、撰写中文日报。调度层会先落一份 UTF-8 日报文件，然后自动按 shell 环境选择发送方式：
   `pwsh/Core` 走 Codex 直发，旧 `powershell.exe/Desktop` 回退到 Python sender。
 - `独立 Python 模式`
-  由 `ai_daily_push` 项目在运行时独立完成抓取、排序、渲染和发送，不依赖 Codex。
+  由 `ai_daily_push` 项目在运行时独立完成抓取、排序、渲染和发送。
 
 ## 仓库结构
 
