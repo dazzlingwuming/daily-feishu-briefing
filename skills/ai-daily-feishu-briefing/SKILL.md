@@ -78,6 +78,9 @@ There are two valid delivery modes.
 
 Prefer this for local development when `lark-cli` already works.
 
+On Windows, prefer this path when Codex is running inside `pwsh` / PowerShell 7 (`PSEdition = Core`).
+When Codex is running from legacy `powershell.exe` / Windows PowerShell 5 (`PSEdition = Desktop`), prefer writing the final report to a UTF-8 file and letting a Python helper send that file instead of inlining a long Chinese payload through the old shell.
+
 Typical pattern:
 
 ```powershell

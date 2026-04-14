@@ -84,3 +84,8 @@ Write for fast scanning.
 After the briefing is complete, send it through the configured Feishu path.
 
 If the message is multiline, prefer a structured `post` payload over plain `text`.
+
+On Windows, prefer this decision rule:
+
+- if running in `pwsh` / PowerShell 7, Codex can send directly with `lark-cli`
+- if running in legacy `powershell.exe`, prefer writing the report to a UTF-8 file and letting a Python helper send it

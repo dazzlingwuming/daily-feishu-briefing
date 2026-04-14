@@ -63,8 +63,20 @@ Use $ai-daily-feishu-briefing to select the top 3 AI papers and top 3 AI news it
 The recommended path in this repository is:
 
 1. Codex uses this skill to select and write the briefing
-2. the wrapper writes the result to `ai_daily_push/briefing_feishu_today.txt`
-3. the project sender sends that UTF-8 file to Feishu
+2. the wrapper always writes the result to a UTF-8 report file
+3. if the active shell is `pwsh` / PowerShell 7, Codex sends the final message directly with `lark-cli`
+4. if the active shell is legacy `powershell.exe` / Windows PowerShell 5, the wrapper falls back to a Python sender that reads the UTF-8 file and delivers it
+
+This keeps the direct path available on modern PowerShell while preserving a safer fallback for older Windows shell environments.
+
+The quickest way to check the current shell is:
+
+```powershell
+$PSVersionTable.PSEdition
+```
+
+- `Core` means `pwsh` / PowerShell 7
+- `Desktop` means legacy `powershell.exe` / Windows PowerShell 5
 
 ## Adapting It To Other Topics
 

@@ -23,6 +23,7 @@ ai_daily_push/.arxiv_last_request
 
 # Scheduler runtime logs
 codex_scheduler/logs/
+codex_scheduler/output/
 
 # IDE
 .idea/

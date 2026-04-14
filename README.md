@@ -7,7 +7,7 @@ This repository provides a reusable workflow for generating a daily briefing and
 It supports two usage modes:
 
 - `Codex + skill mode`
-  Codex uses the `ai-daily-feishu-briefing` skill to gather sources, select the strongest items, write the final Chinese briefing, and send it through the stable Feishu sender.
+  Codex uses the `ai-daily-feishu-briefing` skill to gather sources, select the strongest items, and write the final Chinese briefing. The scheduler always writes a UTF-8 report file first, then chooses delivery automatically: direct Codex delivery on `pwsh/Core`, Python fallback sender on legacy `powershell.exe/Desktop`.
 - `Standalone Python mode`
   The `ai_daily_push` project fetches, ranks, renders, and sends the briefing without depending on Codex at runtime.
 
@@ -18,7 +18,7 @@ It supports two usage modes:
 - `ai_daily_push/`
   Standalone Python project for fetching, ranking, rendering, and sending
 - `codex_scheduler/`
-  Wrapper scripts for running the skill through `codex exec` and Windows Task Scheduler
+  Wrapper scripts for running the skill through `codex exec`, writing the report file, and sending it to Feishu
 
 ## Quick Start
 
@@ -59,10 +59,33 @@ See:
 
 ## Codex Scheduler
 
+First, check which PowerShell you are currently using:
+
+```powershell
+$PSVersionTable.PSEdition
+```
+
+Meaning:
+
+- `Core`: you are already in `pwsh` / PowerShell 7, so the direct Codex delivery path is preferred
+- `Desktop`: you are in legacy `powershell.exe` / Windows PowerShell 5, so the workflow will automatically fall back to the Python sender
+
+To enter `pwsh`, run:
+
+```powershell
+pwsh
+```
+
 If you want a Codex-driven scheduled run, use:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\codex_scheduler\run_codex_briefing.ps1
+```
+
+If you want to prefer the direct Codex delivery path, run it from `pwsh` / PowerShell 7:
+
+```powershell
+pwsh -File .\codex_scheduler\run_codex_briefing.ps1
 ```
 
 Install a daily Windows task:
@@ -98,6 +121,8 @@ See:
 
 - Feishu delivery requires either local `lark-cli` or Feishu API credentials.
 - The Codex scheduler is intended for a trusted personal machine.
+- On Windows, `pwsh` / PowerShell 7 is the recommended shell for direct Chinese delivery.
+- If the user is still running legacy `powershell.exe` / Windows PowerShell 5, the repository falls back to the UTF-8 file plus Python sender path automatically.
 - The skill documentation also explains how to fork this AI-focused workflow into other domains such as business, finance, or policy.
 
 For repository maintenance and publishing notes, see:

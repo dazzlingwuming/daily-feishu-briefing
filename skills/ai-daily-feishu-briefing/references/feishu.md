@@ -6,6 +6,16 @@
 
 Use this when local `lark-cli` is available and already authenticated.
 
+On Windows:
+
+- prefer direct `lark-cli` sending when Codex is running inside `pwsh` / PowerShell 7
+- prefer a UTF-8 file plus Python helper sender when Codex is being driven from legacy `powershell.exe`
+
+Reason:
+
+- PowerShell 7 is much safer for direct Chinese command arguments
+- Windows PowerShell 5 is more likely to misread or mis-handle UTF-8 text unless every read/write step is explicit
+
 Common send command:
 
 ```powershell
@@ -18,6 +28,12 @@ Recommended use:
 - fast recipient verification
 - personal machine setups
 - sending the full content of a local UTF-8 text file after reading the recipient from `.env`
+
+Recommended Windows fallback for old PowerShell:
+
+```powershell
+python codex_scheduler\send_feishu_from_file.py --file codex_scheduler\output\briefing_feishu_today.txt
+```
 
 ### API Mode
 

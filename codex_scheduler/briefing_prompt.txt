@@ -18,9 +18,11 @@ Overall constraints:
 - Make the “为什么值得关注” line specific and differentiated for each item.
 
 Important execution rule:
-- Do not send the Feishu message yourself.
+- Always write the final finished briefing to the UTF-8 file path provided by the wrapper script.
+- Follow the wrapper-provided delivery mode appended at runtime.
+- If the wrapper says direct send is enabled, send the finished report yourself through local `lark-cli`.
+- If the wrapper says fallback sender is enabled, do not send the Feishu message yourself.
 - Do not place the final Chinese briefing inline inside any `powershell.exe -Command "..."` string.
-- Instead, write the final finished briefing to the UTF-8 file path provided by the wrapper script.
 - After writing the file, briefly confirm that the report file was created successfully.
 - Prefer reusing the existing `ai_daily_push` project as a data-source helper instead of inventing new one-off scripts.
 - Do not rely on uninstalled third-party Python packages such as `feedparser`.
@@ -29,8 +31,7 @@ Important execution rule:
 - Prefer the existing helper scripts under `ai_daily_push\scripts`.
 - For candidate extraction, prefer:
   `python ai_daily_push\scripts\export_candidates.py`
-- The current working directory is the repo root `D:\APP_self\热点论文和学术skill`, not `ai_daily_push`.
+- The current working directory is the repo root.
 - Therefore do not run `.\\scripts\\...` commands from the repo root.
 - Always use repo-root-relative paths such as:
   `python ai_daily_push\scripts\export_candidates.py`
-  `python ai_daily_push\scripts\send_test_message.py --file ai_daily_push\briefing_feishu_today.txt`
