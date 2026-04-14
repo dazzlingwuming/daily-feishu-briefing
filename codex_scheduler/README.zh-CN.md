@@ -36,6 +36,32 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\run_codex_briefing.ps
 powershell -ExecutionPolicy Bypass -File .\codex_scheduler\install_codex_briefing_task.ps1 -Time "09:00"
 ```
 
+## 查看任务状态
+
+查看完整状态：
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing"
+```
+
+只看最常用的几个字段：
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing" | Select-Object LastRunTime,LastTaskResult,NextRunTime
+```
+
+只看下一次执行时间：
+
+```powershell
+(Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing").NextRunTime
+```
+
+## 手动触发一次
+
+```powershell
+Start-ScheduledTask -TaskName "Codex AI Daily Briefing"
+```
+
 ## 删除每日任务
 
 ```powershell
@@ -51,6 +77,8 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_brief
 - 控制台打印的飞书消息 ID
 - 最后一行成功提示：
   `Report generated and Feishu delivery completed.`
+
+如果任务还在运行中，`LastTaskResult` 可能会暂时显示 `267009`，这表示计划任务当前仍在执行。
 
 ## 使用前提
 

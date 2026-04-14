@@ -36,6 +36,32 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\run_codex_briefing.ps
 powershell -ExecutionPolicy Bypass -File .\codex_scheduler\install_codex_briefing_task.ps1 -Time "09:00"
 ```
 
+## Check Task Status
+
+See the full task info:
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing"
+```
+
+Show only the most useful fields:
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing" | Select-Object LastRunTime,LastTaskResult,NextRunTime
+```
+
+Show only the next run time:
+
+```powershell
+(Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing").NextRunTime
+```
+
+## Trigger It Manually
+
+```powershell
+Start-ScheduledTask -TaskName "Codex AI Daily Briefing"
+```
+
 ## Remove Daily Task
 
 ```powershell
@@ -51,6 +77,8 @@ When the wrapper succeeds, you should see:
 - a Feishu message ID in the console
 - a final success line:
   `Report generated and Feishu delivery completed.`
+
+If the task is still running, `LastTaskResult` may temporarily show `267009`, which means the scheduled task is currently running.
 
 ## Trust Model
 

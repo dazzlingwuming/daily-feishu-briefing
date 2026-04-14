@@ -77,6 +77,18 @@ powershell -ExecutionPolicy Bypass -File .\codex_scheduler\install_codex_briefin
 powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_briefing_task.ps1
 ```
 
+查看下一次执行时间：
+
+```powershell
+(Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing").NextRunTime
+```
+
+查看当前任务状态：
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing" | Select-Object LastRunTime,LastTaskResult,NextRunTime
+```
+
 详细说明见：
 
 - [codex_scheduler/README.md](./codex_scheduler/README.md)

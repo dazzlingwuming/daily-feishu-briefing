@@ -77,6 +77,18 @@ Remove it later:
 powershell -ExecutionPolicy Bypass -File .\codex_scheduler\uninstall_codex_briefing_task.ps1
 ```
 
+Check the next run time:
+
+```powershell
+(Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing").NextRunTime
+```
+
+Check the current task status:
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Codex AI Daily Briefing" | Select-Object LastRunTime,LastTaskResult,NextRunTime
+```
+
 See:
 
 - [codex_scheduler/README.md](./codex_scheduler/README.md)
